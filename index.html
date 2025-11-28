@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taligaman National High School Research Repository</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Reset and Typography */
+        :root {
+            --primary-color: #004d40; /* Dark Teal - A professional school color */
+            --secondary-color: #b2dfdb; /* Light Teal */
+            --accent-color: #ff6f00; /* Orange for links/buttons */
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        .site-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .site-header h1 {
+            font-size: clamp(1.8em, 4vw, 2.5em);
+            margin-bottom: 5px;
+        }
+
+        .site-header p {
+            opacity: 0.9;
+            font-size: clamp(0.9em, 2vw, 1.1em);
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid var(--secondary-color);
+            border-radius: 25px;
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        #researchSearch {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            padding: 5px;
+            border-radius: 20px;
+        }
+
+        /* Research List and Table Styles */
+        .research-list h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        #researchTable {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden; 
+        }
+
+        #researchTable th, #researchTable td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #researchTable thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        #researchTable tbody tr:hover {
+            background-color: var(--secondary-color);
+            transition: background-color 0.3s;
+        }
+        
+        /* Abstract Cell Specific Styling */
+        .abstract-cell {
+            max-width: 350px; 
+            font-size: 0.9em;
+        }
+
+        .abstract-cell .summary {
+            color: #555;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .abstract-cell .keywords {
+            font-size: 0.85em;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+        
+        /* The full abstract is now only used for data extraction, so it is permanently hidden */
+        .abstract-cell .full-abstract {
+            display: none; 
+        }
+
+        .abstract-toggle {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.75em;
+            margin-top: 5px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .abstract-toggle:hover {
+            background-color: #e65100;
+        }
+
+        .abstract-toggle:active {
+            transform: scale(0.98);
+        }
+
+        /* Full Manuscript Link Styling */
+        .manuscript-link {
+            display: inline-block;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+            border: 1px solid var(--accent-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .manuscript-link:hover {
+            color: white;
+            background-color: var(--accent-color);
+        }
+
+        .manuscript-link i {
+            margin-left: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 15px;
+            margin-top: 30px;
+            font-size: 0.9em;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        /* --- MODAL STYLES --- */
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            backdrop-filter: blur(2px);
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Close Button */
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: var(--accent-color);
+        }
+
+        /* Modal Typography */
+        .modal-title {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .modal-meta {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .modal-keywords-container {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .modal-keywords {
+            font-weight: normal;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+
+        .modal-abstract-body h4 {
+            margin-top: 10px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .modal-footer {
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+
+        /* --- Responsive Design (For Mobile Views) --- */
+        @media (max-width: 900px) {
+            .site-header {
+                padding: 30px 15px;
+            }
+
+            /* Hide table header and treat table rows as blocks */
+            #researchTable thead {
+                display: none;
+            }
+
+            #researchTable, #researchTable tbody, #researchTable tr, #researchTable td {
+                display: block;
+                width: 100%;
+            }
+
+            #researchTable tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                padding: 10px;
+                background-color: white;
+            }
+            
+            #researchTable td {
+                text-align: right;
+                padding-left: 50%; /* Make space for the pseudo-element label */
+                position: relative;
+                border-bottom: none;
+            }
+
+            /* Use the 'data-label' attribute to display column name as a label */
+            #researchTable td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: var(--primary-color);
+                text-align: left;
+            }
+
+            /* Style the content of the Abstract/Keywords cell differently on mobile */
+            #researchTable td[data-label="Abstract"] {
+                text-align: left;
+                padding-left: 10px; /* Reset padding to the left */
+                border-top: 2px solid var(--secondary-color);
+                margin-top: 10px;
+            }
+            
+            /* Hides the label for the Abstract cell, fixing the overlay issue */
+            #researchTable td[data-label="Abstract"]:before {
+                content: none;
+            }
+
+            #researchTable td[data-label="Full Manuscript"] {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <h1>TALIGAMAN NHS</h1>
+        <h3>Research Repository</h3>
+        <p>A collection of studies and academic works by our students and faculty.</p>
+    </header>
+
+    <main class="container">
+        <section class="search-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="researchSearch" onkeyup="filterTable()" placeholder="Search by title, authors, or keywords...">
+            </div>
+        </section>
+
+        <section class="research-list">
+            <h2>Research Artifacts</h2>
+            <table id="researchTable">
+                <thead>
+                    <tr>
+                        <th>Research Title</th>
+                        <th>Authors</th>
+                        <th>Year</th>
+                        <th>Abstract</th>
+                        <th>Manuscript</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Research Title">
+                            Understanding ICT Students' Behavior on Mobile Legends: Bang Bang in Taligaman National High School
+                        </td>
+                        <td data-label="Authors">
+                            James E. Rosales, Jane C. Rosales, John Ray S. Subrastas
+                        </td>
+                        <td data-label="Year">2025</td>
+                        <td data-label="Abstract" class="abstract-cell">
+                            <p class="summary">This study explores the behavioral patterns of ICT students in relation to Mobile Legends: Bang Bang, investigating playing frequency, motivations, and impact on academic performance. Findings suggest the game is a source of entertainment and social bonding, but calls for digital wellness education.</p>
+                            <p class="keywords">Keywords: Mobile Legends: Bang Bang, ICT students, gaming behavior, academic impact, digital wellness</p>
+                            <button class="abstract-toggle" onclick="openAbstractModal(this)">Show Abstract</button>
+                            <div class="full-abstract">
+                                Abstract: This study explores the behavioral patterns of ICT students at Taligaman National High School in relation to their engagement with the popular mobile game Mobile Legends: Bang Bang. Using a mixed-methods research design, the study investigates students’ playing frequency, motivations, in-game spending habits, social interactions, and the potential impact of gameplay on their academic performance and daily routines. Data were gathered through survey questionnaires, focus group discussions, and informal interviews. Findings reveal that most ICT students view the game as a primary source of entertainment and social bonding, though excessive gameplay is associated with reduced study time and occasional classroom distractions. The study highlights the need for balanced gaming habits and recommends the integration of digital wellness education to promote responsible gaming behavior among students.
+                            </div>
+                        </td>
+                        <td data-label="Full Manuscript">
+                            <a href="https://drive.com/c/6929158b-79ec-8326-ac3c-91d4406cdb07" target="_blank" class="manuscript-link">View Full Text <i class="fas fa-external-link-alt"></i></a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td data-label="Research Title">
+                            Digital Literacy Levels and Challenges Among Junior High School Teachers
+                        </td>
+                        <td data-label="Authors">
+                            Dr. Amelia R. Diaz
+                        </td>
+                        <td data-label="Year">2023</td>
+                        <td data-label="Abstract" class="abstract-cell">
+                            <p class="summary">Assessing the digital literacy competency of JHS teachers, identifying key challenges in technology integration, and proposing targeted professional development interventions to enhance instructional strategies.</p>
+                            <p class="keywords">Keywords: Digital Literacy, JHS Teachers, Technology Integration, Professional Development, Educational Technology</p>
+                            <button class="abstract-toggle" onclick="openAbstractModal(this)">Show Abstract</button>
+                            <div class="full-abstract">
+                                Abstract: This survey-based research utilized a descriptive approach to measure the current digital literacy levels among Junior High School teachers at TNHS. Results indicated high proficiency in basic computing but moderate competency in advanced tools for instruction and assessment. The primary challenge identified was lack of time for continuous learning and outdated equipment. The study concludes with a recommendation for a mandatory, incentivized technology skills enhancement program focusing on cloud tools and AI literacy.
+                            </div>
+                        </td>
+                        <td data-label="Full Manuscript">
+                            <a href="#" target="_blank" class="manuscript-link">View Full Text <i class="fas fa-external-link-alt"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    
+    <div id="abstractModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAbstractModal()">&times;</span>
+            <h3 id="modalTitle" class="modal-title"></h3>
+            <p class="modal-meta">Authors: <span id="modalAuthors"></span> | Year Defended: <span id="modalYear"></span></p>
+            <div class="modal-keywords-container">Keywords: <span id="modalKeywords" class="modal-keywords"></span></div>
+            <div class="modal-abstract-body">
+                <h4>Full Abstract</h4>
+                <p id="modalAbstract"></p>
+            </div>
+            <div class="modal-footer">
+                <a id="modalLink" href="#" target="_blank" class="manuscript-link">View Full Text <i class="fas fa-external-link-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2025 Taligaman National High School. Research Office.
+    </footer>
+
+    <script>
+        // FUNCTION FOR SEARCH BAR FILTERING
+        function filterTable() {
+            const input = document.getElementById("researchSearch");
+            const filter = input.value.toUpperCase(); 
+            const table = document.getElementById("researchTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) { 
+                let rowText = '';
+                const searchableCells = [
+                    tr[i].getElementsByTagName("td")[0], 
+                    tr[i].getElementsByTagName("td")[1], 
+                    tr[i].getElementsByTagName("td")[3]  
+                ];
+                
+                searchableCells.forEach(cell => {
+                    if (cell) {
+                        rowText += cell.textContent || cell.innerText; 
+                    }
+                });
+
+                if (rowText.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = ""; 
+                } else {
+                    tr[i].style.display = "none"; 
+                }
+            }
+        }
+
+        // NEW FUNCTION TO OPEN THE ABSTRACT MODAL
+        function openAbstractModal(button) {
+            const row = button.closest('tr'); // Get the parent table row
+            
+            // Extract data from the row cells
+            const title = row.querySelector('td[data-label="Research Title"]').textContent.trim();
+            const authors = row.querySelector('td[data-label="Authors"]').textContent.trim();
+            const year = row.querySelector('td[data-label="Year"]').textContent.trim();
+            
+            // Get keywords (remove the "Keywords:" prefix)
+            const keywordsElement = row.querySelector('.abstract-cell .keywords');
+            const keywordsText = keywordsElement ? keywordsElement.textContent.replace('Keywords:', '').trim() : 'N/A';
+            
+            // Get the full abstract text (remove the "Abstract:" prefix)
+            const abstractText = row.querySelector('.abstract-cell .full-abstract').textContent.replace('Abstract:', '').trim();
+            
+            // Get the link
+            const link = row.querySelector('.manuscript-link').href;
+
+            // Get modal elements and populate them
+            const modal = document.getElementById('abstractModal');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalAuthors').textContent = authors;
+            document.getElementById('modalYear').textContent = year;
+            document.getElementById('modalKeywords').textContent = keywordsText;
+            document.getElementById('modalAbstract').textContent = abstractText;
+            
+            const modalLink = document.getElementById('modalLink');
+            modalLink.href = link;
+
+            // Display the modal
+            modal.style.display = 'flex';
+        }
+
+        // FUNCTION TO CLOSE THE ABSTRACT MODAL
+        function closeAbstractModal() {
+            document.getElementById('abstractModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside the content box
+        window.onclick = function(event) {
+            const modal = document.getElementById('abstractModal');
+            if (event.target == modal) {
+                closeAbstractModal();
+            }
+        }
+    </script>
+
+</body>
+</html>
